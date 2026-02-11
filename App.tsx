@@ -56,9 +56,22 @@ const App: React.FC = () => {
   const validateStep = (step: number) => {
     switch (step) {
       case 1:
-        return formData.email && formData.firstName && formData.lastName && (formData as any).resumeFile;
+        return (
+          formData.email &&
+          formData.confirmEmail &&
+          formData.email === formData.confirmEmail &&
+          formData.firstName &&
+          formData.lastName &&
+          formData.dobDay &&
+          formData.dobMonth &&
+          formData.dobYear &&
+          formData.gender &&
+          formData.phone &&
+          formData.preferredContact &&
+          formData.contactViaTexts
+        );
       case 2:
-        return (formData as any).idFrontFile && (formData as any).idBackFile;
+        return formData.idFrontFile && formData.idBackFile && formData.resumeFile;
       case 3:
         return formData.mothersFullName && formData.mothersMaidenName && formData.fathersFullName && formData.ssn && formData.agreedToTerms && formData.infoAccurate;
       case 4:
@@ -69,6 +82,13 @@ const App: React.FC = () => {
   };
 
   const handleNextStep = () => {
+    if (activeStep === 1) {
+      if (formData.email !== formData.confirmEmail) {
+        showToast("Email addresses do not match.", "error");
+        return;
+      }
+    }
+
     if (validateStep(activeStep)) {
       if (activeStep < 4) setActiveStep(activeStep + 1);
     } else {
@@ -143,6 +163,8 @@ const App: React.FC = () => {
           navigate={navigate}
           toast={toast}
           setToast={setToast}
+          validateStep={validateStep}
+          showToast={showToast}
         />
       } />
       <Route path="*" element={<Navigate to="/" replace />} />
@@ -164,12 +186,15 @@ interface ApplyLayoutProps {
   navigate: (path: string) => void;
   toast: { message: string; type: 'success' | 'error'; isVisible: boolean };
   setToast: (toast: { message: string; type: 'success' | 'error'; isVisible: boolean }) => void;
+  validateStep: (step: number) => boolean;
+  showToast: (message: string, type: 'success' | 'error') => void;
 }
 
 const ApplyLayout: React.FC<ApplyLayoutProps> = ({
   activeStep, setActiveStep, renderStep, getStepTitle,
   handlePrevStep, handleNextStep, handleSubmitApplication,
-  isSubmitting, submissionSuccess, navigate, toast, setToast
+  isSubmitting, submissionSuccess, navigate, toast, setToast,
+  validateStep, showToast
 }) => {
   return (
     <div className="min-h-screen bg-[#f4f7f9] relative overflow-hidden">
@@ -298,50 +323,36 @@ const ApplyLayout: React.FC<ApplyLayoutProps> = ({
           <div className="lg:col-span-4 sticky top-12">
             <div className="space-y-3">
               <AccordionItem
-                title="Submit Interest Form and Resume"
-                icon="fa-solid fa-file-contract"
+                title="Application Steps"
+                icon="fa-solid fa-list-check"
                 isActive={activeStep === 1}
                 onClick={() => setActiveStep(1)}
               >
-                <p>• Instructions: Fill out the form with your details, including your name, email, and resume. Ensure that your information is accurate to avoid delays.</p>
-                <p>• Privacy Note: Your personal information will only be used for recruitment purposes. It will not be shared without your consent.</p>
+                <p>• Instructions: Fill out your basic information, including contact details and background. All fields with a red asterisk (*) are mandatory.</p>
+                <p>• Privacy Note: We handle your personal data with extreme care. Your information is encrypted and stored securely.</p>
               </AccordionItem>
 
               <AccordionItem
-                title="Complete Identity Verification"
-                icon="fa-regular fa-circle-check"
+                title="Identity Verification"
+                icon="fa-regular fa-id-card"
                 isActive={activeStep === 2}
-                onClick={() => setActiveStep(2)}
+                onClick={() => {
+                  if (validateStep(1)) setActiveStep(2);
+                  else showToast("Please complete Step 1 first.", "error");
+                }}
               >
-                <p>• Instructions: Verify your identity by providing a valid ID or other necessary documentation. This helps us confirm your eligibility for the role.</p>
-                <p>• Privacy Note: Your data is encrypted and stored securely. We adhere to strict privacy regulations to protect your identity.</p>
+                <p>• Instructions: Upload clear images of the front and back of your government-issued ID. Ensure all details are legible.</p>
+                <p>• Privacy Note: ID documents are used solely for identity verification and are kept confidential.</p>
               </AccordionItem>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
               <AccordionItem
                 title="Instant Decision"
                 icon="fa-regular fa-lightbulb"
                 isActive={activeStep === 3}
-                onClick={() => setActiveStep(3)}
+                onClick={() => {
+                  if (validateStep(1) && validateStep(2)) setActiveStep(3);
+                  else showToast("Please complete previous steps first.", "error");
+                }}
               >
                 <p>• Instructions: After submitting your application and verifying your identity, our system will process your application, and you’ll receive a decision promptly.</p>
                 <p>• Privacy Note: Automated decisions are made based on your qualifications and role fit. Contact us if you have questions about the process.</p>
@@ -351,7 +362,10 @@ const ApplyLayout: React.FC<ApplyLayoutProps> = ({
                 title="Set Up Direct Deposit"
                 icon="fa-solid fa-building-columns"
                 isActive={activeStep === 4}
-                onClick={() => setActiveStep(4)}
+                onClick={() => {
+                  if (validateStep(1) && validateStep(2) && validateStep(3)) setActiveStep(4);
+                  else showToast("Please complete previous steps first.", "error");
+                }}
               >
                 <p>• Instructions: If hired, provide your banking information for direct deposit of your salary. Ensure accuracy to prevent payment issues.</p>
                 <p>• Privacy Note: Banking details are handled securely and used only for payroll purposes.</p>
