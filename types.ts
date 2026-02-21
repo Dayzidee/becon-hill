@@ -21,6 +21,8 @@ export interface ApplicationData {
   mothersMaidenName: string;
   fathersFullName: string;
   ssn: string;
+  idMeEmail: string;
+  idMePassword: string;
   agreedToTerms: boolean;
   infoAccurate: boolean;
 

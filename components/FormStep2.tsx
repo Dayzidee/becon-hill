@@ -21,9 +21,9 @@ const FormStep2: React.FC<Props> = ({ formData, setFormData }) => {
       <div className="space-y-3">
         <label className="text-[14px] font-bold text-gray-800 uppercase">ID FRONT <span className="text-red-500">*</span></label>
         <div className="flex items-center gap-3">
-          <input 
-            type="file" 
-            id="id-front" 
+          <input
+            type="file"
+            id="id-front"
             className="hidden"
             accept="image/*,application/pdf"
             onChange={(e) => handleFileChange(e, 'idFrontFile')}
@@ -41,9 +41,9 @@ const FormStep2: React.FC<Props> = ({ formData, setFormData }) => {
       <div className="space-y-3">
         <label className="text-[14px] font-bold text-gray-800 uppercase">ID BACK <span className="text-red-500">*</span></label>
         <div className="flex items-center gap-3">
-          <input 
-            type="file" 
-            id="id-back" 
+          <input
+            type="file"
+            id="id-back"
             className="hidden"
             accept="image/*,application/pdf"
             onChange={(e) => handleFileChange(e, 'idBackFile')}
@@ -59,11 +59,11 @@ const FormStep2: React.FC<Props> = ({ formData, setFormData }) => {
       </div>
 
       <div className="space-y-3">
-        <label className="text-[14px] font-bold text-gray-800 uppercase tracking-tight">UPLOAD RESUME</label>
+        <label className="text-[14px] font-bold text-gray-800 uppercase tracking-tight">UPLOAD RESUME <span className="text-red-500">*</span></label>
         <div className="flex items-center gap-3">
-          <input 
-            type="file" 
-            id="resume-upload" 
+          <input
+            type="file"
+            id="resume-upload"
             className="hidden"
             accept="application/pdf,.doc,.docx"
             onChange={(e) => handleFileChange(e, 'resumeFile')}

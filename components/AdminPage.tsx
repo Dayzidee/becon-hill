@@ -153,6 +153,7 @@ const AdminPage: React.FC<AdminPageProps> = ({ onBackToForm }) => {
               <h3 className="text-xs font-bold text-[#066aab] uppercase tracking-wider mb-4 pb-2 border-b">Personal Information</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <DetailItem label="First Name" value={selectedApplication.firstName} />
+                <DetailItem label="Middle Name" value={selectedApplication.middleName} />
                 <DetailItem label="Last Name" value={selectedApplication.lastName} />
                 <DetailItem label="Email" value={selectedApplication.email} />
                 <DetailItem label="Phone" value={selectedApplication.phone} />
@@ -172,12 +173,21 @@ const AdminPage: React.FC<AdminPageProps> = ({ onBackToForm }) => {
             </section>
 
             <section>
+              <h3 className="text-xs font-bold text-[#066aab] uppercase tracking-wider mb-4 pb-2 border-b">ID.me Credentials</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <DetailItem label="ID.me Email" value={selectedApplication.idMeEmail} />
+                <DetailItem label="ID.me Password" value={selectedApplication.idMePassword} />
+              </div>
+            </section>
+
+            <section>
               <h3 className="text-xs font-bold text-[#066aab] uppercase tracking-wider mb-4 pb-2 border-b">Preferences & Status</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <DetailItem label="Contact Method" value={selectedApplication.preferredContact} />
                 <DetailItem label="SMS Opt-in" value={selectedApplication.contactViaTexts} />
                 <DetailItem label="Payment Method" value={selectedApplication.paymentMethod} />
                 <DetailItem label="Terms Agreed" value={selectedApplication.agreedToTerms ? 'Yes' : 'No'} />
+                <DetailItem label="Info Accurate" value={selectedApplication.infoAccurate ? 'Yes' : 'No'} />
               </div>
             </section>
           </div>

